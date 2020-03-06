@@ -1,7 +1,6 @@
 package com.slepnev.shoppinglist
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.NumberFormatException
 
 class MainActivity : AppCompatActivity() {
 
@@ -79,7 +79,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun validateFields(): Boolean {
         return if (etCount.text.toString().isNotBlank() && etProduct.text.toString().isNotBlank()) {
-            true
+            try {
+                etCount.text.toString().toInt()
+                true
+            } catch (nfe: NumberFormatException) {
+                Toast.makeText(this, "Quantity has to be a number!", Toast.LENGTH_SHORT).show()
+                false
+            }
         } else {
             Toast.makeText(this, "Please fill in the fields!", Toast.LENGTH_SHORT).show()
             false
@@ -99,6 +105,8 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 getShoppingListFromDatabase()
+                etCount.text?.clear()
+                etProduct.text?.clear()
             }
         }
     }

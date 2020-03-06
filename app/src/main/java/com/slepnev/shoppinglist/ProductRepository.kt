@@ -8,7 +8,7 @@ class ProductRepository(context: Context) {
     init {
         val database = ShoppingListRoomDatabase.getDatabase(context)
         productDao = database!!.productDao()
-
+        }
         suspend fun getAllProducts(): List<Product> {
             return productDao.getAllProducts()
         }
@@ -24,5 +24,4 @@ class ProductRepository(context: Context) {
         suspend fun deleteAllProducts() {
             return productDao.deleteAllProducts()
         }
-    }
 }

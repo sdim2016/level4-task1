@@ -1,4 +1,4 @@
-package com.slepnev.shoppinglist
+package com.slepnev.shoppinglist.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.slepnev.shoppinglist.database.ProductRepository
+import com.slepnev.shoppinglist.R
+import com.slepnev.shoppinglist.model.Product
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     private fun addProduct() {
         if (validateFields()) {
             mainScope.launch {
-                val product = Product (
+                val product = Product(
                     name = etProduct.text.toString(),
                     quantity = etCount.text.toString().toInt()
                 )

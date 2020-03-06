@@ -1,9 +1,11 @@
-package com.slepnev.shoppinglist
+package com.slepnev.shoppinglist.ui
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.slepnev.shoppinglist.R
+import com.slepnev.shoppinglist.model.Product
 import kotlinx.android.synthetic.main.item_product.view.*
 
 class ProductAdapter(private val products:List<Product>):

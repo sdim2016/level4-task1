@@ -1,4 +1,4 @@
-package com.slepnev.shoppinglist
+package com.slepnev.shoppinglist.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo

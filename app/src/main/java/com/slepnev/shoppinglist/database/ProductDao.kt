@@ -1,9 +1,10 @@
-package com.slepnev.shoppinglist
+package com.slepnev.shoppinglist.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.slepnev.shoppinglist.model.Product
 
 @Dao
 interface ProductDao {

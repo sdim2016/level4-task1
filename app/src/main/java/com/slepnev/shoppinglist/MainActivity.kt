@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         productRepository = ProductRepository(this)
+        initViews()
 
     }
 
@@ -54,8 +56,11 @@ class MainActivity : AppCompatActivity() {
         rvList.layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
         rvList.adapter = productAdapter
         rvList.addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
+        createItemTouchHelper().attachToRecyclerView(rvList)
 
         getShoppingListFromDatabase()
+
+        fab.setOnClickListener { addProduct() }
     }
 
     private fun getShoppingListFromDatabase() {
@@ -83,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             mainScope.launch {
                 val product = Product (
                     name = etProduct.text.toString(),
-                    quantity = etProduct.text.toString().toInt()
+                    quantity = etCount.text.toString().toInt()
                 )
 
                 withContext(Dispatchers.IO) {
@@ -94,4 +99,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun createItemTouchHelper(): ItemTouchHelper {
+        val callback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+            // Enables or Disables the ability to move items up and down.
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            // Callback triggered when a user swiped an item.
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val productToDelete = products[position]
+                mainScope.launch {
+                    withContext(Dispatchers.IO) {
+                        productRepository.deleteProduct(productToDelete)
+                    }
+                    getShoppingListFromDatabase()
+                }
+            }
+        }
+
+        return ItemTouchHelper(callback)
+    }
 }
+
